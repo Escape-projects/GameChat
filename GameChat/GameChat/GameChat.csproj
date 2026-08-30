@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{291E9261-F960-4450-ABFE-580CECC92805}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>GameChat</RootNamespace>
+    <AssemblyName>GameChat</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account.cs" />
+    <Compile Include="Connected Services\Service2\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\Server\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="forms\CreateRoom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\CreateRoom.Designer.cs">
+      <DependentUpon>CreateRoom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\EnterPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\EnterPassword.Designer.cs">
+      <DependentUpon>EnterPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="interfaces\AccountConfirmation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="interfaces\AccountConfirmation.Designer.cs">
+      <DependentUpon>AccountConfirmation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="interfaces\ChatRoom.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="interfaces\ChatRoom.Designer.cs">
+      <DependentUpon>ChatRoom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="interfaces\RoomsByGame.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="interfaces\RoomsByGame.Designer.cs">
+      <DependentUpon>RoomsByGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="interfaces\Chat.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="interfaces\Chat.Designer.cs">
+      <DependentUpon>Chat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="interfaces\FriendList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="interfaces\FriendList.Designer.cs">
+      <DependentUpon>FriendList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="interfaces\Games.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="interfaces\Games.Designer.cs">
+      <DependentUpon>Games.cs</DependentUpon>
+    </Compile>
+    <Compile Include="interfaces\Login.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="interfaces\Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="interfaces\MainScreen.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="interfaces\MainScreen.Designer.cs">
+      <DependentUpon>MainScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="interfaces\Registration.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="interfaces\Registration.Designer.cs">
+      <DependentUpon>Registration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="interfaces\RoomSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="interfaces\RoomSetting.Designer.cs">
+      <DependentUpon>RoomSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Screen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\Screen.Designer.cs">
+      <DependentUpon>Screen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="userControls\FriendPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="userControls\FriendPanel.Designer.cs">
+      <DependentUpon>FriendPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="userControls\GamePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="userControls\GamePanel.Designer.cs">
+      <DependentUpon>GamePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="userControls\MemberPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="userControls\MemberPanel.Designer.cs">
+      <DependentUpon>MemberPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="userControls\messagePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="userControls\messagePanel.Designer.cs">
+      <DependentUpon>messagePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="userControls\RoomPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="userControls\RoomPanel.Designer.cs">
+      <DependentUpon>RoomPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="userControls\SendMessagePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="userControls\SendMessagePanel.Designer.cs">
+      <DependentUpon>SendMessagePanel.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="forms\CreateRoom.resx">
+      <DependentUpon>CreateRoom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\EnterPassword.resx">
+      <DependentUpon>EnterPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="interfaces\AccountConfirmation.resx">
+      <DependentUpon>AccountConfirmation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="interfaces\ChatRoom.resx">
+      <DependentUpon>ChatRoom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="interfaces\RoomsByGame.resx">
+      <DependentUpon>RoomsByGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="interfaces\Chat.resx">
+      <DependentUpon>Chat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="interfaces\FriendList.resx">
+      <DependentUpon>FriendList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="interfaces\Games.resx">
+      <DependentUpon>Games.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="interfaces\Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="interfaces\MainScreen.resx">
+      <DependentUpon>MainScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="interfaces\Registration.resx">
+      <DependentUpon>Registration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="interfaces\RoomSetting.resx">
+      <DependentUpon>RoomSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\Screen.resx">
+      <DependentUpon>Screen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="userControls\FriendPanel.resx">
+      <DependentUpon>FriendPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="userControls\GamePanel.resx">
+      <DependentUpon>GamePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="userControls\MemberPanel.resx">
+      <DependentUpon>MemberPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="userControls\messagePanel.resx">
+      <DependentUpon>messagePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="userControls\RoomPanel.resx">
+      <DependentUpon>RoomPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="userControls\SendMessagePanel.resx">
+      <DependentUpon>SendMessagePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Connected Services\Service2\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Service2\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Service2\SendMessage.wsdl" />
+    <None Include="Connected Services\Server\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Server\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Server\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Server\Service.wsdl" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\icons\glaz2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\Service2\" />
+    <WCFMetadataStorage Include="Connected Services\Server\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Server\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Server\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Server\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\icons\games.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\icons\friends.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\icons\favoriteGames.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Service2\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Service2\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Service2\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\icons\overrule.png" />
+    <None Include="bin\Debug\icons\accept.png" />
+    <None Include="bin\Debug\icons\send_message.png" />
+    <None Include="Connected Services\Server\item.disco" />
+    <None Include="Connected Services\Service2\item.disco" />
+    <None Include="bin\Debug\icons\games\cs2.png" />
+    <None Include="bin\Debug\icons\games\dota2.png" />
+    <None Include="bin\Debug\icons\games\HELLDIVERS2.png" />
+    <None Include="bin\Debug\icons\room.png" />
+    <None Include="bin\Debug\icons\lockOpen.png" />
+    <None Include="bin\Debug\icons\back.png" />
+    <Content Include="icon.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

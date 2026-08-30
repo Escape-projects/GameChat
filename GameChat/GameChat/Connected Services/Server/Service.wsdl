@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://tempuri.org/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" name="Service" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="NetTcpBinding_IService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://192.168.0.138:8001/?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://192.168.0.138:8001/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://192.168.0.138:8001/?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IService_login_InputMessage">
+    <wsdl:part name="parameters" element="tns:login" />
+  </wsdl:message>
+  <wsdl:message name="IService_login_OutputMessage">
+    <wsdl:part name="parameters" element="tns:loginResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_accountCheckForReg_InputMessage">
+    <wsdl:part name="parameters" element="tns:accountCheckForReg" />
+  </wsdl:message>
+  <wsdl:message name="IService_accountCheckForReg_OutputMessage">
+    <wsdl:part name="parameters" element="tns:accountCheckForRegResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_FriendAdd_InputMessage">
+    <wsdl:part name="parameters" element="tns:FriendAdd" />
+  </wsdl:message>
+  <wsdl:message name="IService_FriendAdd_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FriendAddResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_Reg_InputMessage">
+    <wsdl:part name="parameters" element="tns:Reg" />
+  </wsdl:message>
+  <wsdl:message name="IService_Reg_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RegResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_getAccount_InputMessage">
+    <wsdl:part name="parameters" element="tns:getAccount" />
+  </wsdl:message>
+  <wsdl:message name="IService_getAccount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getAccountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_getFriendList_InputMessage">
+    <wsdl:part name="parameters" element="tns:getFriendList" />
+  </wsdl:message>
+  <wsdl:message name="IService_getFriendList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getFriendListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_unfriend_InputMessage">
+    <wsdl:part name="parameters" element="tns:unfriend" />
+  </wsdl:message>
+  <wsdl:message name="IService_unfriend_OutputMessage">
+    <wsdl:part name="parameters" element="tns:unfriendResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_acceptInvation_InputMessage">
+    <wsdl:part name="parameters" element="tns:acceptInvation" />
+  </wsdl:message>
+  <wsdl:message name="IService_acceptInvation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:acceptInvationResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_getMessages_InputMessage">
+    <wsdl:part name="parameters" element="tns:getMessages" />
+  </wsdl:message>
+  <wsdl:message name="IService_getMessages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_getFriendsListWithMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:getFriendsListWithMessage" />
+  </wsdl:message>
+  <wsdl:message name="IService_getFriendsListWithMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getFriendsListWithMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_getGames_InputMessage">
+    <wsdl:part name="parameters" element="tns:getGames" />
+  </wsdl:message>
+  <wsdl:message name="IService_getGames_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getGamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_getImageGame_InputMessage">
+    <wsdl:part name="parameters" element="tns:getImageGame" />
+  </wsdl:message>
+  <wsdl:message name="IService_getImageGame_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getImageGameResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_createRoom_InputMessage">
+    <wsdl:part name="parameters" element="tns:createRoom" />
+  </wsdl:message>
+  <wsdl:message name="IService_createRoom_OutputMessage">
+    <wsdl:part name="parameters" element="tns:createRoomResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_getRooms_InputMessage">
+    <wsdl:part name="parameters" element="tns:getRooms" />
+  </wsdl:message>
+  <wsdl:message name="IService_getRooms_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getRoomsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_joinRoom_InputMessage">
+    <wsdl:part name="parameters" element="tns:joinRoom" />
+  </wsdl:message>
+  <wsdl:message name="IService_joinRoom_OutputMessage">
+    <wsdl:part name="parameters" element="tns:joinRoomResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_roomExit_InputMessage">
+    <wsdl:part name="parameters" element="tns:roomExit" />
+  </wsdl:message>
+  <wsdl:message name="IService_roomExit_OutputMessage">
+    <wsdl:part name="parameters" element="tns:roomExitResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_roomSetting_InputMessage">
+    <wsdl:part name="parameters" element="tns:roomSetting" />
+  </wsdl:message>
+  <wsdl:message name="IService_roomSetting_OutputMessage">
+    <wsdl:part name="parameters" element="tns:roomSettingResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_getMembers_InputMessage">
+    <wsdl:part name="parameters" element="tns:getMembers" />
+  </wsdl:message>
+  <wsdl:message name="IService_getMembers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getMembersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_getMessagesInRoom_InputMessage">
+    <wsdl:part name="parameters" element="tns:getMessagesInRoom" />
+  </wsdl:message>
+  <wsdl:message name="IService_getMessagesInRoom_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getMessagesInRoomResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_messagesRead_InputMessage">
+    <wsdl:part name="parameters" element="tns:messagesRead" />
+  </wsdl:message>
+  <wsdl:message name="IService_messagesRead_OutputMessage">
+    <wsdl:part name="parameters" element="tns:messagesReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_getUnreadMessagesCount_InputMessage">
+    <wsdl:part name="parameters" element="tns:getUnreadMessagesCount" />
+  </wsdl:message>
+  <wsdl:message name="IService_getUnreadMessagesCount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getUnreadMessagesCountResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IService">
+    <wsdl:operation name="login">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/login" message="tns:IService_login_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/loginResponse" message="tns:IService_login_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="accountCheckForReg">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/accountCheckForReg" message="tns:IService_accountCheckForReg_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/accountCheckForRegResponse" message="tns:IService_accountCheckForReg_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FriendAdd">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/FriendAdd" message="tns:IService_FriendAdd_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/FriendAddResponse" message="tns:IService_FriendAdd_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Reg">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/Reg" message="tns:IService_Reg_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/RegResponse" message="tns:IService_Reg_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getAccount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/getAccount" message="tns:IService_getAccount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/getAccountResponse" message="tns:IService_getAccount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getFriendList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/getFriendList" message="tns:IService_getFriendList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/getFriendListResponse" message="tns:IService_getFriendList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="unfriend">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/unfriend" message="tns:IService_unfriend_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/unfriendResponse" message="tns:IService_unfriend_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="acceptInvation">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/acceptInvation" message="tns:IService_acceptInvation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/acceptInvationResponse" message="tns:IService_acceptInvation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getMessages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/getMessages" message="tns:IService_getMessages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/getMessagesResponse" message="tns:IService_getMessages_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getFriendsListWithMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/getFriendsListWithMessage" message="tns:IService_getFriendsListWithMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/getFriendsListWithMessageResponse" message="tns:IService_getFriendsListWithMessage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getGames">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/getGames" message="tns:IService_getGames_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/getGamesResponse" message="tns:IService_getGames_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getImageGame">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/getImageGame" message="tns:IService_getImageGame_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/getImageGameResponse" message="tns:IService_getImageGame_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="createRoom">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/createRoom" message="tns:IService_createRoom_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/createRoomResponse" message="tns:IService_createRoom_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getRooms">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/getRooms" message="tns:IService_getRooms_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/getRoomsResponse" message="tns:IService_getRooms_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="joinRoom">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/joinRoom" message="tns:IService_joinRoom_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/joinRoomResponse" message="tns:IService_joinRoom_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="roomExit">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/roomExit" message="tns:IService_roomExit_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/roomExitResponse" message="tns:IService_roomExit_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="roomSetting">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/roomSetting" message="tns:IService_roomSetting_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/roomSettingResponse" message="tns:IService_roomSetting_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getMembers">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/getMembers" message="tns:IService_getMembers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/getMembersResponse" message="tns:IService_getMembers_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getMessagesInRoom">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/getMessagesInRoom" message="tns:IService_getMessagesInRoom_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/getMessagesInRoomResponse" message="tns:IService_getMessagesInRoom_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="messagesRead">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/messagesRead" message="tns:IService_messagesRead_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/messagesReadResponse" message="tns:IService_messagesRead_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getUnreadMessagesCount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/getUnreadMessagesCount" message="tns:IService_getUnreadMessagesCount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/getUnreadMessagesCountResponse" message="tns:IService_getUnreadMessagesCount_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NetTcpBinding_IService" type="tns:IService">
+    <wsp:PolicyReference URI="#NetTcpBinding_IService_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="login">
+      <soap12:operation soapAction="http://tempuri.org/IService/login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="accountCheckForReg">
+      <soap12:operation soapAction="http://tempuri.org/IService/accountCheckForReg" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FriendAdd">
+      <soap12:operation soapAction="http://tempuri.org/IService/FriendAdd" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Reg">
+      <soap12:operation soapAction="http://tempuri.org/IService/Reg" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAccount">
+      <soap12:operation soapAction="http://tempuri.org/IService/getAccount" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFriendList">
+      <soap12:operation soapAction="http://tempuri.org/IService/getFriendList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="unfriend">
+      <soap12:operation soapAction="http://tempuri.org/IService/unfriend" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="acceptInvation">
+      <soap12:operation soapAction="http://tempuri.org/IService/acceptInvation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMessages">
+      <soap12:operation soapAction="http://tempuri.org/IService/getMessages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFriendsListWithMessage">
+      <soap12:operation soapAction="http://tempuri.org/IService/getFriendsListWithMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGames">
+      <soap12:operation soapAction="http://tempuri.org/IService/getGames" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getImageGame">
+      <soap12:operation soapAction="http://tempuri.org/IService/getImageGame" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createRoom">
+      <soap12:operation soapAction="http://tempuri.org/IService/createRoom" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRooms">
+      <soap12:operation soapAction="http://tempuri.org/IService/getRooms" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="joinRoom">
+      <soap12:operation soapAction="http://tempuri.org/IService/joinRoom" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="roomExit">
+      <soap12:operation soapAction="http://tempuri.org/IService/roomExit" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="roomSetting">
+      <soap12:operation soapAction="http://tempuri.org/IService/roomSetting" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMembers">
+      <soap12:operation soapAction="http://tempuri.org/IService/getMembers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMessagesInRoom">
+      <soap12:operation soapAction="http://tempuri.org/IService/getMessagesInRoom" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="messagesRead">
+      <soap12:operation soapAction="http://tempuri.org/IService/messagesRead" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUnreadMessagesCount">
+      <soap12:operation soapAction="http://tempuri.org/IService/getUnreadMessagesCount" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="NetTcpBinding_IService" binding="tns:NetTcpBinding_IService">
+      <soap12:address location="net.tcp://192.168.0.138:8002/" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.tcp://192.168.0.138:8002/</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
