@@ -33,11 +33,10 @@
 
 ## 🏗️ Архитектура
 
-Приложение построено по классической **трёхуровневой модели**:
-
-1. **Клиент (WinForms)** — интерфейс, отображение сообщений, ввод данных.
-2. **Сервер (WCF)** — бизнес-логика, управление соединениями, трансляция сообщений между клиентами.
-3. **База данных (SQL Server)** — хранение пользователей, сообщений, комнат, друзей.
+**Приложение реализовано по классической **трёхуровневой модели** с четким разделением ответственности:**
+- Уровень представления (WinForms): Отвечает за пользовательский интерфейс и ввод данных.
+- Уровень бизнес-логики (WCF): Ядро системы, реализующее всю логику мессенджера — аутентификацию, управление комнатами и друзьями, а также трансляцию сообщений.
+- Уровень данных (SQL Server): Обеспечивает хранение и целостность данных пользователей, сообщений и комнат.
 
 **Ключевые особенности реализации:**
 - Сервер предоставляет два WCF-сервиса:
@@ -67,165 +66,168 @@
 
 ---
 
-### ⚙️ Основной функционал (бэкенд-логика)
+### ⚙️ Ключевые бэкенд-механизмы
 
-*Здесь показаны ключевые серверные решения: сеть, БД, архитектура. Скриншоты интерфейса лишь иллюстрируют результат.*
+*Ниже представлены ключевые серверные механизмы приложения: регистрация и авторизация, настройка WCF‑транспорта, обмен сообщениями в реальном времени через callback‑контракты и управление игровыми комнатами.*
 
 ---
 
-#### 1. Регистрация пользователя — проверка и сохранение
+#### 1. Аутентификация и управление пользователями
 
 **Задача:**  
-Проверить, что пользователь с таким именем или email ещё не зарегистрирован, затем сохранить данные в БД.
+Проверить существование пользователя по имени или email, зарегистрировать нового пользователя, аутентифицировать по email и паролю.
 
-**Код сервера (WCF-метод `Reg`):**
+**Код сервера:**
 
 ```csharp
+public string login(string Email, string password)
+{
+    string answer;
+    SqlConnection connection = new SqlConnection(@"Data Source=DENNY\SERVER;Initial Catalog=GameChat;Integrated Security=True");
+    connection.Open();
+
+    SqlDataAdapter adapter = new SqlDataAdapter();
+    DataTable table = new DataTable();
+    string query = $"select Email from Users where Email = '{Email}'";
+    SqlCommand cmd = new SqlCommand(query, connection);
+    adapter.SelectCommand = cmd;
+    adapter.Fill(table);
+    if (table.Rows.Count > 0)
+    {
+        table = new DataTable();
+        query = $"select Email, password from Users where Email = '{Email}' and password = '{password}'";
+        cmd = new SqlCommand(query, connection);
+        adapter.SelectCommand = cmd;
+        adapter.Fill(table);
+        if (table.Rows.Count > 0) answer = "вход";
+        else answer = "неправильный пароль";
+    }
+    else answer = "неверный Email";
+
+    connection.Close();
+    return answer;
+}
+
 public string Reg(string userName, string Email, string password)
 {
     string answer;
-    SqlConnection connection = new SqlConnection(connectionString);
+    SqlConnection connection = new SqlConnection(@"Data Source=DENNY\SERVER;Initial Catalog=GameChat;Integrated Security=True");
     connection.Open();
-    string query = $"insert into Users(user_name, Email, password, status) values('{userName}','{Email}','{password}','не всети')";
+
+    string query = $"insert into Users(user_name, Email, password, status) values('{userName}', '{Email}', '{password}', 'не всети')";
     SqlCommand cmd = new SqlCommand(query, connection);
-    if (cmd.ExecuteNonQuery() == 1)
-        answer = "аккаунт зарегистрирован";
-    else
-        answer = "ошибка";
+    if (cmd.ExecuteNonQuery() == 1) answer = "аккаунт зарегистрирован";
+    else answer = "ошибка";
+
     connection.Close();
     return answer;
 }
 ```
-**Результат:**
-
-![Регистрация](screenshots/registration.png)
-
-После успешной регистрации пользователь попадает на форму авторизации.
+> **Результат:** Клиент получает статус операции и реагирует соответствующим образом. Асинхронная обработка запросов обеспечивает отзывчивость интерфейса.
 
 ---
 
-#### 2. WCF-конфигурация для TCP-транспорта
+#### 2. Конфигурация WCF-транспорта (HTTP + TCP)
 
-**Задача:**  
-Настроить сервер для приёма подключений по TCP с возможностью callback-уведомлений.
+**Серверная часть использует два транспортных протокола:**  
+HTTP – для публикации метаданных (WSDL) и обмена служебной информацией.  
+TCP – для высокопроизводительной передачи данных между клиентом и сервером (сообщения в реальном времени).
 
-**Конфигурация (`app.config` сервера):**
+**Конфигурация сервера:**
 
 ```xml
-<?xml version="1.0" encoding="utf-8" ?>
-  <configuration>
-    <startup> 
-      <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.8" />
-    </startup>
-    <system.serviceModel>
-      <bindings>
-        <netTcpBinding>
-          <binding name="LargeMessageBinding" maxReceivedMessageSize="2147483647">
-            <security mode="None">
-              <transport clientCredentialType="None" />
-            </security>
-          </binding>
-        </netTcpBinding>
-      </bindings>
-      <behaviors>
-        <serviceBehaviors>
-          <behavior name="mexBeh">
-            <serviceMetadata httpGetEnabled="true" httpsGetEnabled="true" />
-            <serviceDebug includeExceptionDetailInFaults="true" />
-          </behavior>
-        </serviceBehaviors>
-      </behaviors>
-      <services>
-        <service behaviorConfiguration="mexBeh" name="WCF.Service">
-          <endpoint address="" binding="netTcpBinding" bindingConfiguration="LargeMessageBinding" contract="WCF.IService" />
-          <endpoint address="mex" binding="mexHttpBinding" contract="IMetadataExchange" />
-          <host>
-            <baseAddresses>
-              <add baseAddress="http://ip:port" />
-              <add baseAddress="net.tcp://ip:port" />
-            </baseAddresses>
-          </host>
-        </service>
-          <service behaviorConfiguration="mexBeh" name="WCF.Service2">
-          <endpoint address="" binding="netTcpBinding" bindingConfiguration="LargeMessageBinding" contract="WCF.IService2" />
-          <endpoint address="mex" binding="mexHttpBinding" contract="IMetadataExchange" />
-          <host>
-            <baseAddresses>
-            <add baseAddress="http://ip:port" />
-            <add baseAddress="net.tcp://ip:port" />
-            </baseAddresses>
-          </host>
-        </service>
-      </services>
-    </system.serviceModel>
-  </configuration>
+<services>
+  <service behaviorConfiguration="mexBeh" name="WCF.Service">
+    <endpoint address="" binding="netTcpBinding" bindingConfiguration="LargeMessageBinding"
+      contract="WCF.IService" />
+    <endpoint address="mex" binding="mexHttpBinding" contract="IMetadataExchange" />
+    <host>
+      <baseAddresses>
+        <add baseAddress="http://192.168.0.138:8001" />
+        <add baseAddress="net.tcp://192.168.0.138:8002" />
+      </baseAddresses>
+    </host>
+  </service>
+  <service behaviorConfiguration="mexBeh" name="WCF.Service2">
+    <endpoint address="" binding="netTcpBinding" bindingConfiguration="LargeMessageBinding"
+      contract="WCF.IService2" />
+    <endpoint address="mex" binding="mexHttpBinding" contract="IMetadataExchange" />
+    <host>
+      <baseAddresses>
+        <add baseAddress="http://192.168.0.138:8003" />
+        <add baseAddress="net.tcp://192.168.0.138:8004" />
+      </baseAddresses>
+    </host>
+  </service>
+</services>
 ```
-**Результат:**
-Клиенты могут подключаться к серверу по TCP и вызывать его методы.
+**Конфигурация клиента:**
+
+```xml
+<client>
+  <endpoint address="net.tcp://94.233.10.179:8004/" binding="netTcpBinding"
+    bindingConfiguration="NetTcpBinding_IService2" contract="Service2.IService2"
+    name="NetTcpBinding_IService2" />
+  <endpoint address="net.tcp://94.233.10.179:8002/" binding="netTcpBinding"
+    bindingConfiguration="NetTcpBinding_IService" contract="Server.IService"
+    name="NetTcpBinding_IService" />
+</client>
+```
+> **Результат:** Клиент подключается по TCP, а разработчик может получать метаданные через HTTP. Это позволяет разделить служебный и основной трафик.
 
 ---
 
-#### 3. Callback-контракт для мгновенных уведомлений
+#### 3. Push-уведомления через callback-контракты
 
-**Задача:**
-Сервер должен отправлять клиенту новые сообщения без запроса со стороны клиента (push-уведомления).
+Для мгновенной доставки сообщений используется callback-интерфейс: сервер вызывает метод на клиенте, когда получает новое сообщение для онлайн‑пользователя.
 
 **Контракт на сервере:**
 
 ```csharp
-public interface IService2Callback
+[ServiceContract(CallbackContract = typeof(IService2CallBack))]
+public interface IService2
+{
+    [OperationContract]
+    void Connect(string user_name);
+    [OperationContract]
+    void Disconnect(string user_name);
+    [OperationContract]
+    string SendMessageFriend(string message, string sender, string recipient, DateTime dateTime);
+    [OperationContract]
+    string SendMessageInRoom(int room_id, string sender_name, string message, DateTime dateTime);
+    [OperationContract]
+    string ban(int room_id, string user_name, string game);
+}
+
+public interface IService2CallBack
 {
     [OperationContract(IsOneWay = true)]
-    void SendMessageFriendCallback(string message, string sender, DateTime dateTime);
+    void SendMessageFriendCallBack(string message, string sender, DateTime dateTime);
+    [OperationContract(IsOneWay = true)]
+    void SendMessageInRoomCallBack(int room_id, string sender_name, string message, DateTime dateTime);
+    [OperationContract(IsOneWay = true)]
+    void banCallBack(int room_id, string game);
 }
 ```
-**Реализация на клиенте:**
-
-```csharp
-public class CallbackHandler : IService2Callback
-{
-    public void SendMessageFriendCallback(string message, string sender, DateTime dateTime)
-    {
-        // Вывод сообщения в чат
-        AppendMessage(sender, message, dateTime);
-    }
-}
-```
-**Результат:**
-
-![Личный чат](screenshots/chat.png)
-
-Сообщение появляется у получателя мгновенно, как только сервер его сохранил.
-
----
-
-#### 4. Отправка сообщения — транзакция + уведомление
-
-**Задача:**
-Сохранить сообщение в БД и, если получатель онлайн, отправить ему уведомление через callback.
-
-**Код сервера:**
+**Реализация отправки личного сообщения:**
 
 ```csharp
 public string SendMessageFriend(string message, string sender, string recipient, DateTime dateTime)
 {
     string answer;
-    SqlConnection connection = new SqlConnection(connectionString);
+    SqlConnection connection = new SqlConnection(@"Data Source=DENNY\SERVER;Initial Catalog=GameChat;Integrated Security=True");
     connection.Open();
 
     string query = $"insert into FriendMessages(sender_id, recipient_id, message, message_date, status) " +
-                   $"values((select user_id from Users where user_name = '{sender}'), " +
-                   $"(select user_id from Users where user_name = '{recipient}'), " +
+                   $"values((select user_id from Users where user_name = '{sender}'), (select user_id from Users where user_name = '{recipient}'), " +
                    $"'{message}', '{dateTime}', 'не прочитано')";
-
     SqlCommand cmd = new SqlCommand(query, connection);
     if (cmd.ExecuteNonQuery() == 1)
     {
         answer = "сообщение отправлено";
-        foreach (var user in users)
-            if (user.user_name == recipient)
-                user.operationContext.GetCallbackChannel<IService2Callback>()
-                    .SendMessageFriendCallback(message, sender, dateTime);
+        for (int i = 0; i < users.Count; i++) 
+            if (users[i].user_name == recipient) 
+                users[i].operationContext.GetCallbackChannel<IService2CallBack>().SendMessageFriendCallBack(message, sender, dateTime);
     }
     else answer = "ошибка";
 
@@ -233,31 +235,165 @@ public string SendMessageFriend(string message, string sender, string recipient,
     return answer;
 }
 ```
-**Результат:**
-Сообщение сохраняется в БД и мгновенно доставляется онлайн-получателю.
+**Реализация callback на клиенте:**
+
+```csharp
+public void SendMessageFriendCallBack(string message, string sender, DateTime dateTime)
+{
+    mainScreen.sendMessageFriendCallBack(message, sender, dateTime);
+}
+```
+> **Результат:** Сообщение сохраняется в БД и мгновенно доставляется онлайн-получателю. При закрытом чате пользователь видит уведомление о непрочитанном сообщении.
+
+---
+
+#### 4. Мультиплеерный чат: управление комнатами и баны
+
+**Задача:**
+Сохранить сообщение в БД и, если получатель онлайн, отправить ему уведомление через callback.
+
+**Создание комнаты:**
+
+```csharp
+public string createRoom(string user_creator, string game, string room_name, string password, int members_max)
+{
+    string answer;
+    SqlConnection connection = new SqlConnection(@"Data Source=DENNY\SERVER;Initial Catalog=GameChat;Integrated Security=True");
+    connection.Open();
+
+    SqlDataAdapter adapter = new SqlDataAdapter();
+    DataTable table = new DataTable();
+    string query = $"select room_name from Rooms where game_id = (select game_id from Games where game_name = '{game}') and room_name = '{room_name}';";
+    SqlCommand cmd = new SqlCommand(query, connection);
+    adapter.SelectCommand = cmd;
+    adapter.Fill(table);
+    if (table.Rows.Count < 1)
+    {
+        // вставка комнаты и добавление создателя в RoomMembers
+        adapter = new SqlDataAdapter();
+        if (members_max > 0) query = $"insert into Rooms(game_id, room_name, password, members_current, members_max) " +
+                                     $"values((select game_id from Games where game_name = '{game}'), '{room_name}', '{password}', {1}, {members_max});";
+        else query = $"insert into Rooms(game_id, room_name, password, members_current, members_max) " +
+                     $"values((select game_id from Games where game_name = '{game}'), '{room_name}', '{password}', null, null);";
+        cmd = new SqlCommand(query, connection);
+        adapter.SelectCommand = cmd;
+        if (cmd.ExecuteNonQuery() == 1)
+        {
+            adapter = new SqlDataAdapter();
+            query = $"insert into RoomMembers(user_id, room_id, status) " +
+                    $"values((select user_id from Users where user_name = '{user_creator}'), " +
+                    $"(select room_id from Rooms where room_name = '{room_name}' and game_id = (select game_id from Games where game_name = '{game}')), 'создатель')";
+            cmd = new SqlCommand(query, connection);
+            adapter.SelectCommand = cmd;
+            cmd.ExecuteNonQuery();
+
+            answer = "комната создана";
+        }
+        else answer = "ошибка";
+    }
+    else answer = "Имя комнаты уже существует в этой игре";
+
+    connection.Close();
+    return answer;
+}
+```
+**Отправка сообщения в комнату:**
+
+```csharp
+public string SendMessageInRoom(int room_id, string sender_name, string message, DateTime dateTime)
+{
+    string answer = "";
+    SqlConnection connection = new SqlConnection(@"Data Source=DENNY\SERVER;Initial Catalog=GameChat;Integrated Security=True");
+    connection.Open();
+
+    string query = $"insert into RoomMessages(room_id, sender_id, message, message_date) " +
+                   $"values({room_id}, (select user_id from Users where user_name = '{sender_name}'), '{message}', '{dateTime}')";
+    SqlCommand cmd = new SqlCommand(query, connection);
+    if (cmd.ExecuteNonQuery() == 1)
+    {
+        answer = "сообщение отправлено";
+        
+        // Получить всех участников комнаты (кроме отправителя) и отправить им callback
+        SqlDataAdapter adapter = new SqlDataAdapter();
+        DataTable table = new DataTable();
+        query = $"select Users.user_name from RoomMembers " +
+                $"join Users on RoomMembers.user_id = Users.user_id " +
+                $"where RoomMembers.room_id = {room_id} and RoomMembers.status != 'забанен' and Users.user_name != '{sender_name}'";
+        cmd = new SqlCommand(query, connection);
+        adapter.SelectCommand = cmd;
+        adapter.Fill(table);
+        if (table.Rows.Count > 0)
+        {
+            for (int i = 0; i < users.Count; i++)
+            {
+                for (int j = 0; j < table.Rows.Count; j++)
+                {
+                    if (users[i].user_name == table.Rows[j][0].ToString())
+                    {
+                        users[i].operationContext.GetCallbackChannel<IService2CallBack>().SendMessageInRoomCallBack(room_id, sender_name, message, dateTime);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    else answer = "ошибка";
+
+    connection.Close();
+    return answer;
+}
+```
+**Бан пользователя в комнате:**
+
+```csharp
+public string ban(int room_id, string user_name, string game)
+{
+    string answer;
+    SqlConnection connection = new SqlConnection(@"Data Source=DENNY\SERVER;Initial Catalog=GameChat;Integrated Security=True");
+    connection.Open();
+
+    string query = $"update RoomMembers set status = 'забанен' " +
+                   $"where room_id = {room_id} " +
+                   $"and user_id = (select user_id from Users where user_name = '{user_name}');\r\n" +
+                   $"update Rooms set members_current = members_current - 1 where room_id = {room_id};";
+    SqlCommand cmd = new SqlCommand(query, connection);
+    if (cmd.ExecuteNonQuery() == 2) answer = "пользователь забанен";
+    else answer = "ошибка";
+    try
+    {
+        for (int i = 0; i < users.Count; i++) 
+            if (users[i].user_name == user_name) 
+                users[i].operationContext.GetCallbackChannel<IService2CallBack>().banCallBack(room_id, game);
+    }
+    catch { }
+
+    connection.Close();
+    return answer;
+}
+```
+> **Результат:** Создаются комнаты с гибкими настройками (пароль, лимит участников). Все участники получают сообщения в реальном времени, а бан блокирует доступ и закрывает форму на клиенте.
 
 ---
 
 ## 📂 Содержимое репозитория
 
-- `GameChat/` — исходный код клиента и сервера.
-- `DataBase/` — база данных.
+- `GameChat/` — исходный код клиентcого приложения.
+- `Server_GameChat/` — исходный код код серверной программы.
+- `DataBase/` — файл для создания базы данных.
 - `диплом.pdf` — пояснительная записка (со сканами подписей).
 - `презентация.pptx` — презентация к защите.
 
 ---
 
 ## 📝 Примечание для рекрутеров
+**Ключевые навыки, которые демонстрирует этот проект:**
+- 🚀 Разработка на C# и .NET Framework
+- 🏗️ Клиент-серверная архитектура и WCF
+- 🌐 Сетевое взаимодействие по TCP/IP
+- 🗄️ Проектирование реляционных БД (SQL Server)
+- 📨 Асинхронная обработка и push-уведомления
 
-Этот проект наглядно демонстрирует мое понимание:
-*   **C# и .NET Framework**
-*   **Клиент-серверной архитектуры**
-*   **Сетевого взаимодействия (WCF, TCP/IP)**
-*   **Проектирования реляционных баз данных (SQL Server)**
-*   **Многопоточности и асинхронных операций**
-*   **Разработки распределенных систем**
-
-Код не безупречен с точки зрения безопасности (SQL-инъекции, открытые пароли), а пользовательский интерфейс сделан максимально просто — я целенаправленно фокусируюсь на бэкенд-разработке, а не на UI/фронтенде. Однако проект демонстрирует, что я **умею строить работающие распределённые системы** и **могу быстро наверстать современные практики** — в этом я уже продвинулся в последующих проектах.
+Код, представленный в проекте, отражает мой уровень на момент окончания обучения. Он не лишен недостатков с точки зрения безопасности (например, уязвимость к SQL-инъекциям и хранение паролей в открытом виде), а интерфейс на WinForms намеренно выполнен минималистично, так как мой основной фокус — бэкенд-разработка. Главная ценность этого проекта — в демонстрации способности построить работающую распределённую систему с сетевым взаимодействием в реальном времени. За время, прошедшее после защиты, я значительно углубил свои знания в области архитектуры и безопасности, что подтверждается моими последующими проектами.
 
 ---
 
