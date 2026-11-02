@@ -180,7 +180,7 @@ if (cmd.ExecuteNonQuery() == 1)
 | Пароли хранятся в открытом виде                              | BCrypt за интерфейсом `IPasswordHasher`                      |
 | Строка подключения захардкожена в коде                       | Конфигурация и переменные окружения                          |
 | Нет слоя репозиториев: SQL прямо в формах и сервисах         | Сервисный слой, репозитории, DTO                             |
-| Нет тестов                                                   | xUnit + Moq, 52 теста в [LibraryAPI](https://github.com/Escape-projects/LibraryAPI) |
+| Нет тестов                                                   | xUnit + Moq, 76 тестов в [LibraryAPI](https://github.com/Escape-projects/LibraryAPI) (52 юнит-теста и 24 интеграционных) |
 | Нет логирования, ошибки показываются `MessageBox`            | Serilog, глобальный обработчик исключений                    |
 
 Следующий проект на том же стеке — [LibraryAPI](https://github.com/Escape-projects/LibraryAPI) (2026): EF Core вместо ручного ADO.NET, JWT с refresh-токенами, роли, кэширование, тесты, Docker. Домен другой (библиотека, а не мессенджер), но решаемые задачи те же — и решены они иначе.
