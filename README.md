@@ -1,11 +1,11 @@
 # 🎮 GameChat
 
-![.NET Framework](https://img.shields.io/badge/.NET%20Framework-4.8-512BD4)
-![WCF](https://img.shields.io/badge/WCF-netTcpBinding-5C2D91)
-![SQL Server](https://img.shields.io/badge/SQL%20Server-2019-CC2927)
+![.NET Framework](https://img.shields.io/badge/.NET%20Framework-4.8-512BD4)  
+![WCF](https://img.shields.io/badge/WCF-netTcpBinding-5C2D91)  
+![SQL Server](https://img.shields.io/badge/SQL%20Server-2019-CC2927)  
 ![WinForms](https://img.shields.io/badge/UI-WinForms-0078D7)
 
-Клиент-серверный игровой мессенджер: регистрация с подтверждением по email, друзья, тематические комнаты по играм и обмен сообщениями в реальном времени через WCF и TCP/IP.
+Игровая платформа для общения (минималистичный и простой аналог discord) с клиент-серверной архитектурой: регистрация с подтверждением по email, друзья, групповые чаты по играм и обмен сообщениями в реальном времени через WCF и TCP/IP.
 
 ![GameChat](screenshots/room_chat.png)
 
